@@ -3,36 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Tracker V5 (Par 3 Default)</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Golf Pro Tracker</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+    
     <style>
-        body { font-family: -apple-system, sans-serif; padding: 10px; background: #eef2f3; color: #333; }
+        body { font-family: -apple-system, sans-serif; padding: 10px; background: #eef2f3; color: #333; margin: 0; }
         .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
-        h2 { text-align: center; color: #1b5e20; margin-bottom: 5px; }
+        h2 { text-align: center; color: #1b5e20; margin-top: 5px; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; font-size: 14px; }
         th { background: #1b5e20; color: white; padding: 10px 2px; position: sticky; top: 0; }
         td { border-bottom: 1px solid #eee; padding: 8px 2px; text-align: center; }
-        
         .btn-par { background: #f1f8e9; border: 1px solid #1b5e20; border-radius: 4px; padding: 5px; width: 35px; cursor: pointer; }
-        .btn-fir { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px; width: 45px; font-size: 16px; cursor: pointer; min-height: 35px; }
-        .chk-gir { transform: scale(1.3); }
+        .btn-fir { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px; width: 45px; font-size: 16px; min-height: 35px; cursor: pointer; }
         .input-num { width: 38px; padding: 6px 2px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        
         .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .calc-btn { padding: 15px; background: #1b5e20; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
         .reset-btn { padding: 15px; background: #c62828; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        .copy-btn { width: 100%; padding: 12px; background: #0277bd; color: white; border: none; border-radius: 10px; font-size: 14px; margin-top: 10px; cursor: pointer; display: none; }
-        
         #result { display: none; margin-top: 20px; padding: 15px; background: #fff; border: 2px solid #1b5e20; border-radius: 12px; }
         .stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #ccc; }
-        .gross-box { font-size: 1.2em; color: #b71c1c; font-weight: bold; }
+        .copy-btn { width: 100%; padding: 12px; background: #0277bd; color: white; border: none; border-radius: 10px; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Road to Pro V5 ⛳</h2>
-    <p style="text-align:center; font-size: 11px; color: #666;">Default Par 3 | FIR/Putt ว่างเริ่มต้น</p>
-    
+    <h2>Golf Pro Tracker 🏌️‍♂️</h2>
     <table>
         <thead>
             <tr>
@@ -49,41 +47,36 @@
 
     <div class="action-btns">
         <button class="calc-btn" onclick="calculateStats()">วิเคราะห์ผล</button>
-        <button class="reset-btn" onclick="resetAll()">รีเซ็ตทั้งหมด</button>
+        <button class="reset-btn" onclick="resetAll()">รีเซ็ต</button>
     </div>
 
     <div id="result">
         <h3>สรุปผลกอล์ฟ:</h3>
-        <div id="statText">
-            <div class="stat-row gross-box"><span>Gross Score:</span> <span id="totalGross"></span></div>
-            <div class="stat-row"><span>Fairway Hit:</span> <span id="fwPct"></span></div>
-            <div class="stat-row"><span>Miss L/R/❌:</span> <span id="missDetails"></span></div>
-            <div class="stat-row"><span>GIR:</span> <span id="girPct"></span></div>
-            <div class="stat-row"><span>Total Putts:</span> <span id="totalPutts"></span></div>
-        </div>
-        <button id="copyBtn" class="copy-btn" onclick="copyToClipboard()">คัดลอกผลเพื่อส่งให้ AI</button>
+        <div class="stat-row"><b>Gross Score:</b> <b id="totalGross" style="color:red"></b></div>
+        <div class="stat-row"><span>Fairway Hit:</span> <span id="fwPct"></span></div>
+        <div class="stat-row"><span>Miss L/R/❌:</span> <span id="missDetails"></span></div>
+        <div class="stat-row"><span>GIR:</span> <span id="girPct"></span></div>
+        <div class="stat-row"><span>Total Putts:</span> <span id="totalPutts"></span></div>
+        <button class="copy-btn" onclick="copyToClipboard()">คัดลอกผลส่ง AI</button>
     </div>
 </div>
 
 <script>
     const firOptions = ['', '✅', '⬅️', '➡️', '❌'];
-    const storageKey = 'golf_stats_v5';
+    const storageKey = 'golf_stats_v6';
 
     function init() {
         const tbody = document.getElementById('tableBody');
         const savedData = JSON.parse(localStorage.getItem(storageKey)) || {};
-
         for (let i = 1; i <= 18; i++) {
-            // ถ้าไม่มีข้อมูลเก่า ให้ Default Par เป็น 3 และ FIR/Putt เป็นค่าว่าง
             const data = savedData[i] || { par: 3, fir: '', stroke: '', gir: false, putt: '' };
             const tr = document.createElement('tr');
-            tr.dataset.hole = i;
             tr.innerHTML = `
                 <td><b>${i}</b></td>
                 <td><button class="btn-par" onclick="togglePar(this)">${data.par}</button></td>
                 <td class="fir-cell">${data.par == 3 ? '-' : `<button class="btn-fir" onclick="toggleFir(this)">${data.fir}</button>`}</td>
                 <td><input type="number" class="input-num stroke-val" value="${data.stroke}" placeholder="-" onchange="saveData()"></td>
-                <td><input type="checkbox" class="chk-gir" ${data.gir ? 'checked' : ''} onchange="saveData()"></td>
+                <td><input type="checkbox" class="chk-gir" ${data.gir ? 'checked' : ''} onchange="saveData()" style="transform:scale(1.3)"></td>
                 <td><input type="number" class="input-num putt-val" value="${data.putt}" placeholder="-" onchange="saveData()"></td>
             `;
             tbody.appendChild(tr);
@@ -91,36 +84,26 @@
     }
 
     function togglePar(btn) {
-        let current = parseInt(btn.innerText);
-        let next = current >= 6 ? 3 : current + 1;
+        let n = parseInt(btn.innerText);
+        let next = n >= 6 ? 3 : n + 1;
         btn.innerText = next;
-        
-        const tr = btn.closest('tr');
-        const firCell = tr.querySelector('.fir-cell');
-        // ถ้าเป็น Par 3 ให้ซ่อน FIR
-        if (next === 3) {
-            firCell.innerHTML = '-';
-        } else {
-            // ถ้าเปลี่ยนจาก 3 เป็น Par อื่น ให้แสดงปุ่ม FIR ที่เป็นค่าว่าง
-            firCell.innerHTML = `<button class="btn-fir" onclick="toggleFir(this)"></button>`;
-        }
+        const cell = btn.closest('tr').querySelector('.fir-cell');
+        cell.innerHTML = next === 3 ? '-' : `<button class="btn-fir" onclick="toggleFir(this)"></button>`;
         saveData();
     }
 
     function toggleFir(btn) {
-        let currentIdx = firOptions.indexOf(btn.innerText);
-        if (currentIdx === -1) currentIdx = 0; // กันค่าว่างหลุด
-        btn.innerText = firOptions[(currentIdx + 1) % firOptions.length];
+        let idx = firOptions.indexOf(btn.innerText);
+        btn.innerText = firOptions[(idx + 1) % firOptions.length];
         saveData();
     }
 
     function saveData() {
         const data = {};
-        document.querySelectorAll('#tableBody tr').forEach(tr => {
-            const hole = tr.dataset.hole;
+        document.querySelectorAll('#tableBody tr').forEach((tr, i) => {
             const par = parseInt(tr.querySelector('.btn-par').innerText);
             const firBtn = tr.querySelector('.btn-fir');
-            data[hole] = {
+            data[i+1] = {
                 par: par,
                 fir: firBtn ? firBtn.innerText : '-',
                 stroke: tr.querySelector('.stroke-val').value,
@@ -132,57 +115,37 @@
     }
 
     function calculateStats() {
-        let totalFw = 0, fwHits = 0, L = 0, R = 0, X = 0, gir = 0, putts = 0, gross = 0;
+        let fwHits = 0, totalFw = 0, L = 0, R = 0, X = 0, gir = 0, putts = 0, gross = 0;
         document.querySelectorAll('#tableBody tr').forEach(tr => {
             const par = parseInt(tr.querySelector('.btn-par').innerText);
             const firBtn = tr.querySelector('.btn-fir');
-            const sVal = parseInt(tr.querySelector('.stroke-val').value) || 0;
-            const pVal = parseInt(tr.querySelector('.putt-val').value) || 0;
-
+            const s = parseInt(tr.querySelector('.stroke-val').value) || 0;
+            const p = parseInt(tr.querySelector('.putt-val').value) || 0;
             if (par > 3 && firBtn) {
                 totalFw++;
-                const val = firBtn.innerText;
-                if (val === '✅') fwHits++;
-                else if (val === '⬅️') L++;
-                else if (val === '➡️') R++;
-                else if (val === '❌') X++;
+                if (firBtn.innerText === '✅') fwHits++;
+                else if (firBtn.innerText === '⬅️') L++;
+                else if (firBtn.innerText === '➡️') R++;
+                else if (firBtn.innerText === '❌') X++;
             }
             if (tr.querySelector('.chk-gir').checked) gir++;
-            putts += pVal;
-            gross += sVal;
+            putts += p; gross += s;
         });
-
         document.getElementById('totalGross').innerText = gross;
-        document.getElementById('fwPct').innerText = `${fwHits}/${totalFw} (${totalFw > 0 ? Math.round(fwHits/totalFw*100) : 0}%)`;
+        document.getElementById('fwPct').innerText = `${fwHits}/${totalFw} (${totalFw>0?Math.round(fwHits/totalFw*100):0}%)`;
         document.getElementById('missDetails').innerText = `⬅️${L} | ➡️${R} | ❌${X}`;
         document.getElementById('girPct').innerText = `${gir}/18 (${Math.round(gir/18*100)}%)`;
         document.getElementById('totalPutts').innerText = putts;
-        
         document.getElementById('result').style.display = 'block';
-        document.getElementById('copyBtn').style.display = 'block';
-        window.scrollTo(0, document.body.scrollHeight);
     }
 
     function copyToClipboard() {
-        const gross = document.getElementById('totalGross').innerText;
-        const fw = document.getElementById('fwPct').innerText;
-        const miss = document.getElementById('missDetails').innerText;
-        const gir = document.getElementById('girPct').innerText;
-        const p = document.getElementById('totalPutts').innerText;
-        const text = `สรุปผลกอล์ฟ:\n- Gross Score: ${gross}\n- FW Hit: ${fw}\n- Miss (L/R/X): ${miss}\n- GIR: ${gir}\n- Total Putts: ${p}`;
-        
-        navigator.clipboard.writeText(text).then(() => alert('คัดลอกสถิติแล้ว!'));
+        const text = `Gross: ${document.getElementById('totalGross').innerText}\nFW: ${document.getElementById('fwPct').innerText}\nMiss: ${document.getElementById('missDetails').innerText}\nGIR: ${document.getElementById('girPct').innerText}\nPutts: ${document.getElementById('totalPutts').innerText}`;
+        navigator.clipboard.writeText(text).then(() => alert('คัดลอกแล้ว!'));
     }
 
-    function resetAll() {
-        if (confirm('รีเซ็ตข้อมูลเพื่อเริ่มรอบใหม่?')) {
-            localStorage.removeItem(storageKey);
-            location.reload();
-        }
-    }
-
+    function resetAll() { if(confirm('รีเซ็ต?')) { localStorage.removeItem(storageKey); location.reload(); } }
     init();
 </script>
-
 </body>
 </html>
