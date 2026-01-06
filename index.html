@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1b5e20">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+
+<title>Golf Pro Tracker</title>
+
+<style>
+body { font-family: -apple-system, sans-serif; padding: env(safe-area-inset-top) 10px 20px 10px; background: #eef2f3; margin: 0; }
+.card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: 10px auto; }
+h2 { text-align: center; color: #1b5e20; margin: 10px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: #1b5e20; color: white; padding: 10px 2px; position: sticky; top: 0; }
+td { border-bottom: 1px solid #eee; padding: 8px 2px; text-align: center; }
+.btn-par { background: #f1f8e9; border: 1px solid #1b5e20; border-radius: 4px; padding: 6px; width: 35px; font-weight: bold; }
+.btn-fir { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px; width: 45px; font-size: 16px; min-height: 38px; }
+.input-num { width: 38px; padding: 8px 2px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+.action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+.calc-btn { padding: 15px; background: #1b5e20; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; }
+.reset-btn { padding: 15px; background: #c62828; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; }
+#result { display: none; margin-top: 20px; padding: 15px; background: #fff; border: 2px solid #1b5e20; border-radius: 12px; }
+.stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ccc; }
+.copy-btn { width: 100%; padding: 15px; background: #0277bd; color: white; border: none; border-radius: 10px; margin-top: 15px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2>Golf Pro Tracker 🏌️‍♂️</h2>
+<p style="text-align:center;color:#666">PWA Version</p>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
+
+</body>
+</html>
