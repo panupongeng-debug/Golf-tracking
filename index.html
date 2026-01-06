@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1b5e20">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+<title>Golf Pro Tracker</title>
+<style>
+body{font-family:-apple-system,sans-serif;background:#eef2f3;margin:0;padding:10px}
+.card{background:#fff;padding:15px;border-radius:15px;max-width:600px;margin:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#1b5e20;color:#fff;padding:8px}
+td{border-bottom:1px solid #eee;padding:6px;text-align:center}
+.btn-par,.btn-fir{border-radius:4px}
+</style>
+</head>
+<body>
+<div class="card">
+<h2 style="text-align:center;color:#1b5e20">Golf Pro Tracker 🏌️‍♂️</h2>
+<table>
+<thead><tr><th>Hole</th><th>Par</th><th>FIR</th><th>Stroke</th><th>GIR</th><th>Putt</th></tr></thead>
+<tbody id="tableBody"></tbody>
+</table>
+<button onclick="calculate()">วิเคราะห์</button>
+<button onclick="resetAll()">รีเซ็ต</button>
+<div id="result"></div>
+</div>
+<script>
+const fir=['','✅','⬅️','➡️','❌'];const key='golf_pwa';
+function init(){
+ const tb=document.getElementById('tableBody');
+ const d=JSON.parse(localStorage.getItem(key))||{};
+ for(let i=1;i<=18;i++){
+  const r=d[i]||{par:4,fir:'',s:'',g:false,p:''};
+  tb.innerHTML+=`<tr>
+   <td>${i}</td>
+   <td><button onclick="par(this)">${r.par}</button></td>
+   <td>${r.par==3?'-':`<button onclick="firT(this)">${r.fir}</button>`}</td>
+   <td><input value="${r.s}" onchange="save()"></td>
+   <td><input type=checkbox ${r.g?'checked':''} onchange="save()"></td>
+   <td><input value="${r.p}" onchange="save()"></td></tr>`;
+ }
+}
+function par(b){let n=+b.innerText;b.innerText=n>=6?3:n+1;save();}
+function firT(b){let i=fir.indexOf(b.innerText);b.innerText=fir[(i+1)%fir.length];save();}
+function save(){
+ const d={};document.querySelectorAll('tbody tr').forEach((tr,i)=>{
+  d[i+1]={par:+tr.children[1].innerText,fir:tr.children[2].innerText,s:tr.children[3].firstChild.value,g:tr.children[4].firstChild.checked,p:tr.children[5].firstChild.value};
+ });
+ localStorage.setItem(key,JSON.stringify(d));
+}
+function calculate(){
+ let g=0,p=0;document.querySelectorAll('tbody tr').forEach(tr=>{
+  g+=+tr.children[3].firstChild.value||0;
+  p+=+tr.children[5].firstChild.value||0;
+ });
+ document.getElementById('result').innerText=`Gross ${g} | Putts ${p}`;
+}
+function resetAll(){localStorage.removeItem(key);location.reload();}
+init();
+if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js');}
+</script>
+</body>
+</html>
