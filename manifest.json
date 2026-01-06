@@ -1,7 +1,7 @@
 {
   "name": "Golf Pro Tracker",
   "short_name": "Golf Tracker",
-  "description": "Professional Golf Score Tracker with Statistics",
+  "description": "Professional Golf Score Tracker with Advanced Statistics",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
@@ -18,17 +18,32 @@
     },
     {
       "src": "https://cdn-icons-png.flaticon.com/512/1099/1099680.png",
-      "sizes": "512x512", 
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
     }
   ],
-  "categories": ["sports", "utilities"],
+  "categories": ["sports", "utilities", "lifestyle"],
   "screenshots": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/1099/1099680.png",
       "sizes": "540x720",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Round",
+      "short_name": "New Round",
+      "description": "Start a new golf round",
+      "url": "./index.html",
+      "icons": [
+        {
+          "src": "https://cdn-icons-png.flaticon.com/192/1099/1099680.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
