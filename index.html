@@ -2,37 +2,31 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1b5e20">
+    <link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="GolfPro">
-    
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
+
     <title>Golf Pro Tracker</title>
     
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
-    
     <style>
-        /* บังคับให้แสดงผลเต็มจอ ไม่มีแถบขาว */
-        html, body { height: 100%; margin: 0; background: #eef2f3; overflow-x: hidden; }
-        body { font-family: -apple-system, sans-serif; padding: 15px; box-sizing: border-box; }
-        
-        .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
-        h2 { text-align: center; color: #1b5e20; margin-top: 5px; }
-        
-        /* สไตล์ตารางให้เหมาะกับมือถือ */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        body { font-family: -apple-system, sans-serif; padding: env(safe-area-inset-top) 10px 20px 10px; background: #eef2f3; margin: 0; }
+        .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: 10px auto; }
+        h2 { text-align: center; color: #1b5e20; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #1b5e20; color: white; padding: 10px 2px; position: sticky; top: 0; }
-        td { border-bottom: 1px solid #eee; padding: 10px 2px; text-align: center; }
-        
-        .btn-par { background: #f1f8e9; border: 1px solid #1b5e20; border-radius: 4px; padding: 6px; width: 35px; cursor: pointer; font-weight: bold; }
-        .btn-fir { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px; width: 45px; font-size: 16px; min-height: 38px; cursor: pointer; }
-        .input-num { width: 38px; padding: 8px 2px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; -webkit-appearance: none; }
-        
-        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        td { border-bottom: 1px solid #eee; padding: 8px 2px; text-align: center; }
+        .btn-par { background: #f1f8e9; border: 1px solid #1b5e20; border-radius: 4px; padding: 6px; width: 35px; font-weight: bold; }
+        .btn-fir { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px; width: 45px; font-size: 16px; min-height: 38px; }
+        .input-num { width: 38px; padding: 8px 2px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .calc-btn { padding: 15px; background: #1b5e20; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; }
         .reset-btn { padding: 15px; background: #c62828; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; }
-        
         #result { display: none; margin-top: 20px; padding: 15px; background: #fff; border: 2px solid #1b5e20; border-radius: 12px; }
         .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ccc; }
         .copy-btn { width: 100%; padding: 15px; background: #0277bd; color: white; border: none; border-radius: 10px; margin-top: 15px; font-weight: bold; }
@@ -41,7 +35,7 @@
 <body>
 
 <div class="card">
-    <h2>Golf Pro Tracker V7 🏌️‍♂️</h2>
+    <h2>Golf Pro Tracker 🏌️‍♂️</h2>
     <table>
         <thead>
             <tr>
@@ -63,7 +57,7 @@
 
     <div id="result">
         <h3>สรุปผลกอล์ฟ:</h3>
-        <div class="stat-row"><b style="font-size: 1.2em;">Gross Score:</b> <b id="totalGross" style="font-size: 1.2em; color:red"></b></div>
+        <div class="stat-row"><b>Gross Score:</b> <b id="totalGross" style="color:red; font-size: 1.2em;"></b></div>
         <div class="stat-row"><span>Fairway Hit:</span> <span id="fwPct"></span></div>
         <div class="stat-row"><span>Miss L/R/❌:</span> <span id="missDetails"></span></div>
         <div class="stat-row"><span>GIR:</span> <span id="girPct"></span></div>
@@ -74,7 +68,7 @@
 
 <script>
     const firOptions = ['', '✅', '⬅️', '➡️', '❌'];
-    const storageKey = 'golf_stats_v7';
+    const storageKey = 'golf_stats_v8';
 
     function init() {
         const tbody = document.getElementById('tableBody');
@@ -148,14 +142,15 @@
         document.getElementById('girPct').innerText = `${gir}/18 (${Math.round(gir/18*100)}%)`;
         document.getElementById('totalPutts').innerText = putts;
         document.getElementById('result').style.display = 'block';
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
     function copyToClipboard() {
         const text = `Gross: ${document.getElementById('totalGross').innerText}\nFW: ${document.getElementById('fwPct').innerText}\nMiss: ${document.getElementById('missDetails').innerText}\nGIR: ${document.getElementById('girPct').innerText}\nPutts: ${document.getElementById('totalPutts').innerText}`;
-        navigator.clipboard.writeText(text).then(() => alert('คัดลอกสำเร็จ! ส่งผลให้ AI ได้เลย'));
+        navigator.clipboard.writeText(text).then(() => alert('คัดลอกสำเร็จ!'));
     }
 
-    function resetAll() { if(confirm('ต้องการรีเซ็ตเพื่อเริ่มรอบใหม่หรือไม่?')) { localStorage.removeItem(storageKey); location.reload(); } }
+    function resetAll() { if(confirm('รีเซ็ตข้อมูลทั้งหมด?')) { localStorage.removeItem(storageKey); location.reload(); } }
     init();
 </script>
 </body>
