@@ -39,11 +39,8 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      // ถ้ามีใน cache ใช้อันนั้นก่อน
       if (response) return response;
-      // ถ้าไม่มีให้ดึงจาก network
       return fetch(event.request).catch(() => {
-        // ถ้า offline และเป็นหน้า HTML ให้ fallback ไป index.html
         if (event.request.destination === 'document') {
           return caches.match('./index.html');
         }
