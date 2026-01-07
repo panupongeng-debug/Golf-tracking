@@ -20,7 +20,7 @@
   <title>Golf Pro Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <!-- PWA Meta Tags -->
+  <!-- PWA Meta -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#1b5e20">
   <link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
@@ -29,810 +29,714 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1099/1099680.png">
 
-  <!-- Manifest -->
   <link rel="manifest" href="manifest.json">
 
   <style>
-    body {
-      font-family: -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
-      padding: env(safe-area-inset-top) 10px 20px 10px;
-      background: linear-gradient(135deg, #eef2f3, #cfd9df);
+    * {
+      box-sizing: border-box;
       margin: 0;
-      color: #123026;
+      padding: 0;
     }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: env(safe-area-inset-top) 12px 20px 12px;
+      background: linear-gradient(135deg, #eef2f3 0%, #8bc34a 100%);
+      min-height: 100vh;
+      color: #1a1a1a;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
     .card {
-      background: rgba(255,255,255,0.95);
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
-      max-width: 650px;
-      margin: 10px auto;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
     }
-    h2 {
+
+    .header {
       text-align: center;
       color: #1b5e20;
-      margin: 10px 0;
-      font-weight: 700;
+      font-size: 1.8em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
+    .round-info {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-group label {
+      font-size: 0.85em;
+      color: #555;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .input-field {
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #fff;
+    }
+
+    .input-field:focus {
+      border-color: #1b5e20;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(27,94,32,0.1);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
+      background: #fff;
       font-size: 13px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+
     th {
-      background: #1b5e20;
+      background: linear-gradient(135deg, #1b5e20, #2e7d32);
       color: white;
-      padding: 12px 4px;
+      padding: 15px 8px;
+      font-weight: 600;
+      text-align: center;
       position: sticky;
       top: 0;
-      z-index: 2;
-      font-weight: 600;
+      z-index: 10;
     }
+
     td {
-      border-bottom: 1px solid #eee;
-      padding: 8px 4px;
+      padding: 12px 8px;
       text-align: center;
-      background: #fafafa;
+      border-bottom: 1px solid #f0f0f0;
     }
-    tbody tr:nth-child(even) td {
-      background: #f1f8e9;
+
+    tbody tr:nth-child(even) {
+      background-color: #f8fffe;
     }
-    .btn-par {
-      background: linear-gradient(135deg, #f1f8e9, #e8f5e9);
-      border: 2px solid #1b5e20;
+
+    tbody tr:hover {
+      background-color: #e8f5e9;
+    }
+
+    .btn {
+      border: none;
       border-radius: 8px;
-      padding: 8px;
-      width: 42px;
-      font-weight: bold;
       cursor: pointer;
-      color: #1b5e20;
+      font-weight: 600;
       transition: all 0.2s ease;
-    }
-    .btn-par:hover {
-      background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
-      transform: scale(1.05);
-    }
-    .btn-fir, .btn-gir {
-      background: linear-gradient(135deg, #fff, #f5f5f5);
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 6px;
-      width: 50px;
-      font-size: 16px;
-      min-height: 40px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
     }
-    .btn-fir:hover, .btn-gir:hover {
-      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-      transform: scale(1.05);
-      border-color: #1b5e20;
-    }
-    .input-num {
-      width: 50px;
-      padding: 8px 4px;
-      text-align: center;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      background: #fff;
-      transition: all 0.2s ease;
-    }
-    .input-num:focus {
-      border-color: #1b5e20;
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(27,94,32,0.1);
-    }
-    .top-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-      align-items: center;
-    }
-    .top-row input, .top-row select {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 2px solid #e0e0e0;
-      font-size: 14px;
-      background: #fff;
-      transition: all 0.2s ease;
-    }
-    .top-row input:focus, .top-row select:focus {
-      border-color: #1b5e20;
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(27,94,32,0.1);
-    }
-    .top-row input[type="text"] {
-      flex: 1;
-      min-width: 140px;
+
+    .btn-par {
+      background: linear-gradient(135deg, #4caf50, #66bb6a);
+      color: white;
+      padding: 8px;
+      width: 40px;
+      height: 40px;
     }
 
-    .action-btns {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 20px;
+    .btn-par:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(76,175,80,0.3);
     }
-    .btn-main {
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
+
+    .btn-toggle {
+      background: linear-gradient(135deg, #fff, #f5f5f5);
+      border: 2px solid #ddd;
+      color: #333;
+      padding: 8px;
+      width: 50px;
+      height: 40px;
+      font-size: 16px;
+    }
+
+    .btn-toggle:hover {
+      border-color: #1b5e20;
+      transform: scale(1.05);
+    }
+
+    .input-score {
+      width: 60px;
+      padding: 8px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      text-align: center;
       font-size: 14px;
       font-weight: bold;
+    }
+
+    .input-score:focus {
+      border-color: #1b5e20;
+      outline: none;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .btn-action {
+      padding: 15px;
+      font-size: 16px;
+      border-radius: 12px;
       color: white;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border: none;
       cursor: pointer;
-      transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .btn-main:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    }
-    .btn-calc { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
-    .btn-save { background: linear-gradient(135deg, #0277bd, #0288d1); }
-    .btn-reset { background: linear-gradient(135deg, #c62828, #d32f2f); }
 
-    #result {
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .btn-analyze { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+    .btn-save    { background: linear-gradient(135deg, #2196f3, #1976d2); }
+    .btn-reset   { background: linear-gradient(135deg, #f44336, #d32f2f); }
+
+    .stats-panel {
       display: none;
-      margin-top: 25px;
-      padding: 20px;
       background: linear-gradient(135deg, #fff, #f8f9fa);
       border: 3px solid #1b5e20;
       border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
     }
-    #result h3 {
+
+    .stats-title {
       color: #1b5e20;
-      margin-bottom: 15px;
+      font-size: 1.3em;
+      font-weight: bold;
       text-align: center;
+      margin-bottom: 20px;
     }
+
     .stat-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 10px 0;
       border-bottom: 2px dashed #e0e0e0;
       font-size: 14px;
-      font-weight: 500;
     }
-    .stat-row:last-of-type {
+
+    .stat-row:last-child {
       border-bottom: none;
     }
-    #totalGross {
-      color: #c62828;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-    .copy-btn {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, #0277bd, #0288d1);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .copy-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2,119,189,0.3);
+
+    .stat-label {
+      font-weight: 600;
+      color: #333;
     }
 
-    .rounds-block {
-      margin-top: 25px;
-    }
-    .rounds-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .rounds-header h3 {
-      color: #1b5e20;
-      margin: 0;
-    }
-    .rounds-list {
-      max-height: 250px;
-      overflow-y: auto;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #f5f7f8, #e8eaf6);
-      padding: 10px;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .round-item {
-      background: linear-gradient(135deg, #fff, #f8f9fa);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: all 0.2s ease;
-    }
-    .round-item:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-    }
-    .round-item:last-child {
-      margin-bottom: 0;
-    }
-    .round-item-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .round-name {
+    .stat-value {
       font-weight: 700;
       color: #1b5e20;
-      font-size: 15px;
     }
-    .round-meta {
-      font-size: 12px;
-      color: #666;
-      line-height: 1.3;
+
+    .gross-score {
+      font-size: 1.5em !important;
+      color: #f44336 !important;
     }
-    .round-actions {
-      display: flex;
-      gap: 8px;
-    }
-    .round-btn {
-      flex: 1;
-      padding: 8px 12px;
-      border-radius: 20px;
+
+    .btn-copy {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      color: white;
       border: none;
-      font-size: 12px;
-      font-weight: 600;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 15px;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .round-btn-view {
-      background: linear-gradient(135deg, #1b5e20, #2e7d32);
-      color: #fff;
-    }
-    .round-btn-view:hover {
-      background: linear-gradient(135deg, #2e7d32, #388e3c);
-      transform: scale(1.02);
-    }
-    .round-btn-del {
-      background: linear-gradient(135deg, #c62828, #d32f2f);
-      color: #fff;
-    }
-    .round-btn-del:hover {
-      background: linear-gradient(135deg, #d32f2f, #f44336);
-      transform: scale(1.02);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    @media (max-width: 600px) {
-      .card {
-        margin: 5px;
-        padding: 12px;
-      }
-      .top-row {
-        flex-direction: column;
-      }
-      .top-row input, .top-row select {
-        width: 100%;
-      }
-      table {
-        font-size: 12px;
-      }
-      th, td {
-        padding: 6px 2px;
-      }
-      .btn-par {
-        width: 35px;
-        padding: 6px;
-      }
-      .btn-fir, .btn-gir {
-        width: 40px;
-        min-height: 35px;
-        font-size: 14px;
-      }
-      .input-num {
-        width: 40px;
-        padding: 6px 2px;
-      }
+    .btn-copy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255,152,0,0.3);
     }
 
-    .table-wrapper {
-      overflow-x: auto;
-      margin: 15px 0;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    .saved-rounds {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .round-item {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-left: 4px solid #1b5e20;
+    }
+
+    .round-summary {
+      background: #e8f5e9;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 0.9em;
+      white-space: pre-line;
     }
 
     .empty-state {
       text-align: center;
-      color: #777;
+      color: #999;
       padding: 20px;
       font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+      .round-info {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .action-buttons {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      table { font-size: 11px; }
+      th, td { padding: 8px 4px; }
+      .btn-par, .btn-toggle { width: 35px; height: 35px; }
+      .input-score { width: 45px; }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- รอบปัจจุบัน -->
+    <div class="card">
+      <div class="header">Golf Pro Tracker 🏌️‍♂️</div>
 
-<div class="card">
-  <h2>Golf Pro Tracker 🏌️‍♂️</h2>
-
-  <!-- ข้อมูลรอบ -->
-  <div class="top-row">
-    <input id="courseName" type="text" placeholder="ชื่อสนาม / ชื่อรอบ">
-    <input id="roundDate" type="date">
-    <select id="totalHoles">
-      <option value="9">9 หลุม</option>
-      <option value="18" selected>18 หลุม</option>
-    </select>
-  </div>
-
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Hole</th>
-          <th>Par</th>
-          <th>FIR</th>
-          <th>Stroke</th>
-          <th>GIR</th>
-          <th>Putt</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
-
-  <div class="action-btns">
-    <button class="btn-main btn-calc" onclick="calculateStats()">📊 วิเคราะห์</button>
-    <button class="btn-main btn-save" onclick="saveRound()">💾 บันทึกรอบ</button>
-    <button class="btn-main btn-reset" onclick="resetCurrent()">🔄 รีเซ็ต</button>
-  </div>
-
-  <!-- รายการรอบ + ปุ่มสถิติ -->
-  <div class="rounds-block">
-    <div class="rounds-header">
-      <h3>📈 สถิติรอบที่ผ่านมา</h3>
-      <small style="color:#666;">กดรอบเพื่อดูสถิติ</small>
-    </div>
-    <div class="rounds-list" id="roundsList"></div>
-  </div>
-
-  <!-- กล่องแสดงสถิติของรอบที่เลือก -->
-  <div id="result">
-    <h3 id="resultTitle">📊 สรุปผลกอล์ฟ</h3>
-    <div class="stat-row">
-      <b>🏌️ Gross Score:</b> <b id="totalGross"></b>
-    </div>
-    <div class="stat-row">
-      <span>🎯 Fairway Hit:</span> <span id="fwPct"></span>
-    </div>
-    <div class="stat-row">
-      <span>📍 Miss Direction:</span> <span id="missDetails"></span>
-    </div>
-    <div class="stat-row">
-      <span>🟢 Green in Regulation:</span> <span id="girPct"></span>
-    </div>
-    <div class="stat-row">
-      <span>⛳ Total Putts:</span> <span id="totalPutts"></span>
-    </div>
-    <button class="copy-btn" onclick="copyToClipboard()">📋 คัดลอกผลส่ง AI</button>
-  </div>
-</div>
-
-<script>
-  // === Service Worker Registration ===
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(registration => console.log('SW registered'))
-        .catch(error => console.log('SW registration failed'));
-    });
-  }
-
-  // === Storage Keys ===
-  const CURRENT_KEY = 'golf_current_v2';
-  const ROUNDS_KEY = 'golf_rounds_v2';
-
-  // === Toggle States ===
-  const FIR_STATES = ['', '✅', '⬅️', '➡️', '❌'];  // ว่าง, ถูก, ซ้าย, ขวา, พลาด
-  const GIR_STATES = ['', '❌', '✅'];  // ว่าง, ผิด, ถูก
-
-  // === Build Table ===
-  function buildTable(holes) {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-    for (let i = 1; i <= holes; i++) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><b>${i}</b></td>
-        <td><button class="btn-par" data-hole="${i}" onclick="togglePar(this)">3</button></td>
-        <td class="fir-cell">-</td>
-        <td><input type="number" class="input-num stroke-val" data-hole="${i}" placeholder="-" min="1" max="15" onchange="saveCurrent()"></td>
-        <td><button class="btn-gir" data-hole="${i}" onclick="toggleGir(this)">-</button></td>
-        <td><input type="number" class="input-num putt-val" data-hole="${i}" placeholder="-" min="0" max="10" onchange="saveCurrent()"></td>
-      `;
-      tbody.appendChild(tr);
-    }
-    updateFirCells();
-  }
-
-  function updateFirCells() {
-    document.querySelectorAll('#tableBody tr').forEach(tr => {
-      const parBtn = tr.querySelector('.btn-par');
-      const par = parseInt(parBtn.innerText);
-      const firCell = tr.querySelector('.fir-cell');
-      const hole = parBtn.dataset.hole;
-      
-      if (par === 3) {
-        firCell.innerHTML = '-';
-      } else {
-        if (!firCell.querySelector('.btn-fir')) {
-          firCell.innerHTML = `<button class="btn-fir" data-hole="${hole}" onclick="toggleFir(this)"></button>`;
-        }
-      }
-    });
-  }
-
-  // === Toggle Functions ===
-  function togglePar(btn) {
-    let n = parseInt(btn.innerText);
-    n = n >= 6 ? 3 : n + 1;
-    btn.innerText = n;
-    updateFirCells();
-    saveCurrent();
-  }
-
-  function toggleFir(btn) {
-    let current = btn.innerText || '';
-    let idx = FIR_STATES.indexOf(current);
-    const next = FIR_STATES[(idx + 1) % FIR_STATES.length];
-    btn.innerText = next;
-    saveCurrent();
-  }
-
-  function toggleGir(btn) {
-    let current = btn.innerText === '-' ? '' : btn.innerText;
-    let idx = GIR_STATES.indexOf(current);
-    const next = GIR_STATES[(idx + 1) % GIR_STATES.length];
-    btn.innerText = next || '-';
-    saveCurrent();
-  }
-
-  // === Data Management ===
-  function collectCurrentRoundData() {
-    const name = document.getElementById('courseName').value.trim();
-    const date = document.getElementById('roundDate').value;
-    const holes = parseInt(document.getElementById('totalHoles').value);
-
-    const holeData = {};
-    document.querySelectorAll('#tableBody tr').forEach((tr, index) => {
-      const i = index + 1;
-      const par = parseInt(tr.querySelector('.btn-par').innerText);
-      const firBtn = tr.querySelector('.btn-fir');
-      const girBtn = tr.querySelector('.btn-gir');
-      const stroke = tr.querySelector('.stroke-val').value;
-      const putt = tr.querySelector('.putt-val').value;
-
-      holeData[i] = {
-        par: par,
-        fir: firBtn ? (firBtn.innerText || '') : '',
-        gir: girBtn ? (girBtn.innerText === '-' ? '' : girBtn.innerText) : '',
-        stroke: stroke,
-        putt: putt
-      };
-    });
-
-    return {
-      name: name || 'รอบไม่มีชื่อ',
-      date: date || new Date().toISOString().slice(0, 10),
-      holes,
-      holeData
-    };
-  }
-
-  function saveCurrent() {
-    const round = collectCurrentRoundData();
-    localStorage.setItem(CURRENT_KEY, JSON.stringify(round));
-  }
-
-  function loadCurrent() {
-    const saved = localStorage.getItem(CURRENT_KEY);
-    if (!saved) return;
-    
-    try {
-      const round = JSON.parse(saved);
-      document.getElementById('courseName').value = round.name !== 'รอบไม่มีชื่อ' ? round.name : '';
-      document.getElementById('roundDate').value = round.date || new Date().toISOString().slice(0, 10);
-      document.getElementById('totalHoles').value = round.holes || 18;
-
-      buildTable(round.holes || 18);
-
-      Object.entries(round.holeData || {}).forEach(([hole, h]) => {
-        const tr = document.querySelector(`#tableBody tr:nth-child(${hole})`);
-        if (!tr) return;
-        
-        const parBtn = tr.querySelector('.btn-par');
-        const strokeInput = tr.querySelector('.stroke-val');
-        const puttInput = tr.querySelector('.putt-val');
-
-        if (parBtn && h.par != null) parBtn.innerText = h.par;
-        updateFirCells();
-        
-        const firBtn = tr.querySelector('.btn-fir');
-        if (firBtn && h.fir) firBtn.innerText = h.fir;
-        
-        const girBtn = tr.querySelector('.btn-gir');
-        if (girBtn && h.gir != null) girBtn.innerText = h.gir || '-';
-        
-        if (strokeInput) strokeInput.value = h.stroke || '';
-        if (puttInput) puttInput.value = h.putt || '';
-      });
-    } catch(e) {
-      console.error('loadCurrent error', e);
-    }
-  }
-
-  // === Round Management ===
-  function saveRound() {
-    const round = collectCurrentRoundData();
-    const rounds = JSON.parse(localStorage.getItem(ROUNDS_KEY) || '[]');
-    
-    const fullRound = {
-      id: Date.now(),
-      ...round,
-      createdAt: new Date().toISOString()
-    };
-    
-    rounds.unshift(fullRound);
-    if (rounds.length > 100) rounds.pop();
-    
-    localStorage.setItem(ROUNDS_KEY, JSON.stringify(rounds));
-    localStorage.setItem(CURRENT_KEY, JSON.stringify(fullRound));
-    
-    loadRoundsList();
-    alert('🎉 บันทึกรอบเรียบร้อย');
-  }
-
-  function loadRoundsList() {
-    const rounds = JSON.parse(localStorage.getItem(ROUNDS_KEY) || '[]');
-    const container = document.getElementById('roundsList');
-    
-    if (!rounds.length) {
-      container.innerHTML = '<div class="empty-state">📋 ยังไม่มีรอบที่บันทึก</div>';
-      return;
-    }
-    
-    container.innerHTML = rounds.map(r => {
-      const totalStroke = Object.values(r.holeData || {}).reduce((sum, h) => {
-        return sum + (parseInt(h.stroke) || 0);
-      }, 0);
-      
-      const totalPar = Object.values(r.holeData || {}).reduce((sum, h) => {
-        return sum + (parseInt(h.par) || 3);
-      }, 0);
-      
-      const scoreToPar = totalStroke && totalPar ? totalStroke - totalPar : 0;
-      const scoreText = scoreToPar === 0 ? 'E' : (scoreToPar > 0 ? `+${scoreToPar}` : `${scoreToPar}`);
-      
-      const dateLabel = r.date ? new Date(r.date).toLocaleDateString('th-TH') : '';
-      
-      return `
-        <div class="round-item">
-          <div class="round-item-top">
-            <div>
-              <div class="round-name">${r.name}</div>
-              <div class="round-meta">
-                📅 ${dateLabel} • 🏌️ ${r.holes} หลุม<br>
-                🎯 Gross: ${totalStroke || '-'} (${scoreText})
-              </div>
-            </div>
-          </div>
-          <div class="round-actions">
-            <button class="round-btn round-btn-view" onclick="viewRoundStats(${r.id})">📊 ดูสถิติ</button>
-            <button class="round-btn round-btn-del" onclick="deleteRound(${r.id})">🗑️ ลบ</button>
-          </div>
+      <div class="round-info">
+        <div class="input-group">
+          <label>ชื่อสนาม / รอบ</label>
+          <input id="courseName" type="text" class="input-field" placeholder="เช่น สนาม A เช้าเสาร์">
         </div>
-      `;
-    }).join('');
-  }
+        <div class="input-group">
+          <label>วันที่</label>
+          <input id="roundDate" type="date" class="input-field">
+        </div>
+        <div class="input-group">
+          <label>จำนวนหลุม</label>
+          <select id="totalHoles" class="input-field">
+            <option value="9">9 หลุม</option>
+            <option value="18" selected>18 หลุม</option>
+          </select>
+        </div>
+      </div>
 
-  function deleteRound(id) {
-    if (!confirm('🗑️ ต้องการลบรอบนี้หรือไม่?')) return;
-    
-    const rounds = JSON.parse(localStorage.getItem(ROUNDS_KEY) || '[]');
-    const filtered = rounds.filter(r => r.id !== id);
-    localStorage.setItem(ROUNDS_KEY, JSON.stringify(filtered));
-    loadRoundsList();
-  }
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Hole</th>
+              <th>Par</th>
+              <th>FIR</th>
+              <th>Stroke</th>
+              <th>GIR</th>
+              <th>Putt</th>
+            </tr>
+          </thead>
+          <tbody id="scoreTable"></tbody>
+        </table>
+      </div>
 
-  // === Statistics ===
-  function viewRoundStats(id) {
-    const rounds = JSON.parse(localStorage.getItem(ROUNDS_KEY) || '[]');
-    const round = rounds.find(r => r.id === id);
-    if (!round) return;
-    
-    const stats = calcStatsFromRound(round);
-    renderStats(stats, round);
-  }
+      <div class="action-buttons">
+        <button class="btn-action btn-analyze" onclick="analyzeRound()">📊 วิเคราะห์</button>
+        <button class="btn-action btn-save" onclick="saveRound()">💾 บันทึกรอบ</button>
+        <button class="btn-action btn-reset" onclick="resetRound()">🔄 รีเซ็ต</button>
+      </div>
+    </div>
 
-  function calculateStats() {
-    const round = collectCurrentRoundData();
-    const stats = calcStatsFromRound(round);
-    renderStats(stats, round);
-  }
+    <!-- สรุปสถิติ -->
+    <div class="card stats-panel" id="statsPanel">
+      <div class="stats-title" id="statsTitle">📊 สรุปผลการเล่น</div>
 
-  function calcStatsFromRound(round) {
-    let fwHits = 0, totalFw = 0, L = 0, R = 0, X = 0;
-    let girCount = 0, putts = 0, gross = 0;
+      <div class="stat-row">
+        <span class="stat-label">🏌️ Gross Score:</span>
+        <span class="stat-value gross-score" id="grossScore">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">🎯 Fairway Hit:</span>
+        <span class="stat-value" id="fairwayHit">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">📍 Miss Direction:</span>
+        <span class="stat-value" id="missDirection">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">🟢 GIR:</span>
+        <span class="stat-value" id="girStats">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">⛳ Total Putts:</span>
+        <span class="stat-value" id="totalPutts">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">🧮 สกอร์ต่อหลุม:</span>
+        <span class="stat-value" id="scoreBreakdown">-</span>
+      </div>
 
-    Object.values(round.holeData || {}).forEach(h => {
-      const par = parseInt(h.par) || 3;
-      const stroke = parseInt(h.stroke) || 0;
-      const putt = parseInt(h.putt) || 0;
-      const fir = h.fir || '';
-      const gir = h.gir || '';
+      <button class="btn-copy" onclick="copyStats()">📋 Copy</button>
+    </div>
 
-      if (par > 3) {
-        totalFw++;
-        if (fir === '✅') fwHits++;
-        else if (fir === '⬅️') L++;
-        else if (fir === '➡️') R++;
-        else if (fir === '❌') X++;
+    <!-- รอบที่บันทึกไว้ -->
+    <div class="card">
+      <div class="header" style="font-size:1.3em;">📈 รอบที่บันทึกไว้</div>
+      <div class="saved-rounds" id="savedRounds"></div>
+    </div>
+  </div>
+
+  <script>
+    // PWA: Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(() => console.log('SW registered'))
+          .catch(err => console.log('SW register error', err));
+      });
+    }
+
+    const STORAGE_KEY = 'golf_rounds_full_v1';
+    const FIR_STATES = ['', '✅', '⬅️', '➡️', '❌']; // ว่าง, Hit, ซ้าย, ขวา, พลาด
+    const GIR_STATES = ['', '❌', '✅'];            // ว่าง, ผิด, ถูก
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('roundDate').value = new Date().toISOString().slice(0,10);
+      buildScoreTable(18);
+      loadSavedRounds();
+
+      document.getElementById('totalHoles').addEventListener('change', e => {
+        buildScoreTable(parseInt(e.target.value, 10));
+      });
+    });
+
+    function buildScoreTable(holes) {
+      const tbody = document.getElementById('scoreTable');
+      tbody.innerHTML = '';
+      for (let i = 1; i <= holes; i++) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${i}</strong></td>
+          <td><button class="btn btn-par" onclick="togglePar(this)">${i <= 2 || i >= 17 ? 3 : 4}</button></td>
+          <td class="fir-cell" data-hole="${i}">-</td>
+          <td><input type="number" class="input-score" data-type="stroke" data-hole="${i}" min="1" max="15"></td>
+          <td><button class="btn btn-toggle" onclick="toggleGir(this)" data-hole="${i}">-</button></td>
+          <td><input type="number" class="input-score" data-type="putt" data-hole="${i}" min="0" max="10"></td>
+        `;
+        tbody.appendChild(tr);
+      }
+      updateFirCells();
+    }
+
+    function updateFirCells() {
+      document.querySelectorAll('.fir-cell').forEach(cell => {
+        const parBtn = cell.parentElement.querySelector('.btn-par');
+        const par = parseInt(parBtn.textContent, 10);
+        if (par === 3) {
+          cell.innerHTML = '-';
+        } else {
+          cell.innerHTML = '<button class="btn btn-toggle" onclick="toggleFir(this)">-</button>';
+        }
+      });
+    }
+
+    function togglePar(btn) {
+      let par = parseInt(btn.textContent, 10);
+      par = par >= 6 ? 3 : par + 1;
+      btn.textContent = par;
+      updateFirCells();
+    }
+
+    function toggleFir(btn) {
+      const current = btn.textContent === '-' ? '' : btn.textContent;
+      const idx = FIR_STATES.indexOf(current);
+      const next = FIR_STATES[(idx + 1) % FIR_STATES.length];
+      btn.textContent = next || '-';
+    }
+
+    function toggleGir(btn) {
+      const current = btn.textContent === '-' ? '' : btn.textContent;
+      const idx = GIR_STATES.indexOf(current);
+      const next = GIR_STATES[(idx + 1) % GIR_STATES.length];
+      btn.textContent = next || '-';
+    }
+
+    function collectRoundData() {
+      const courseName = document.getElementById('courseName').value.trim();
+      const date = document.getElementById('roundDate').value;
+      const holes = parseInt(document.getElementById('totalHoles').value, 10);
+      const holeData = [];
+
+      document.querySelectorAll('#scoreTable tr').forEach((tr, index) => {
+        const hole = index + 1;
+        const parBtn = tr.querySelector('.btn-par');
+        const strokeInput = tr.querySelector('input[data-type="stroke"]');
+        const puttInput = tr.querySelector('input[data-type="putt"]');
+        const firBtn = tr.querySelector('.fir-cell button');
+        const girBtn = tr.querySelector('button.btn-toggle[data-hole]');
+
+        const par = parseInt(parBtn.textContent, 10);
+        const stroke = strokeInput.value ? parseInt(strokeInput.value, 10) : null;
+        const putt = puttInput.value ? parseInt(puttInput.value, 10) : null;
+        const fir = firBtn ? (firBtn.textContent === '-' ? '' : firBtn.textContent) : '';
+        const gir = girBtn ? (girBtn.textContent === '-' ? '' : girBtn.textContent) : '';
+
+        holeData.push({ hole, par, stroke, putt, fir, gir });
+      });
+
+      return {
+        id: Date.now(),
+        courseName: courseName || 'รอบไม่มีชื่อ',
+        date: date || new Date().toISOString().slice(0,10),
+        holes,
+        holeData
+      };
+    }
+
+    function calculateStats(round) {
+      let totalStroke = 0;
+      let totalPutt = 0;
+      let fwHits = 0, totalFw = 0, L = 0, R = 0, X = 0;
+      let girHits = 0;
+
+      // นับสกอร์ต่อหลุม
+      let eagle = 0, birdie = 0, parCount = 0, bogey = 0, doubleOrWorse = 0;
+
+      round.holeData.forEach(h => {
+        const par = h.par || 0;
+        const stroke = h.stroke || 0;
+        const putt = h.putt || 0;
+
+        if (stroke) totalStroke += stroke;
+        if (putt) totalPutt += putt;
+
+        if (par > 3) {
+          totalFw++;
+          if (h.fir === '✅') fwHits++;
+          else if (h.fir === '⬅️') L++;
+          else if (h.fir === '➡️') R++;
+          else if (h.fir === '❌') X++;
+        }
+
+        if (h.gir === '✅') girHits++;
+
+        if (par && stroke) {
+          const diff = stroke - par;
+          if (diff <= -2)      eagle++;
+          else if (diff === -1) birdie++;
+          else if (diff === 0)  parCount++;
+          else if (diff === 1)  bogey++;
+          else if (diff >= 2)   doubleOrWorse++;
+        }
+      });
+
+      const fwPct  = totalFw ? Math.round((fwHits / totalFw) * 100)   : 0;
+      const girPct = round.holes ? Math.round((girHits / round.holes) * 100) : 0;
+
+      return {
+        totalStroke,
+        totalPutt,
+        fwHits,
+        totalFw,
+        fwPct,
+        L, R, X,
+        girHits,
+        girPct,
+        eagle,
+        birdie,
+        parCount,
+        bogey,
+        doubleOrWorse
+      };
+    }
+
+    function displayStats(stats, round) {
+      document.getElementById('statsTitle').textContent =
+        `📊 สรุปผล: ${round.courseName} (${round.date})`;
+
+      document.getElementById('grossScore').textContent = stats.totalStroke;
+      document.getElementById('fairwayHit').textContent =
+        `${stats.fwHits}/${stats.totalFw} (${stats.fwPct}%)`;
+      document.getElementById('missDirection').textContent =
+        `⬅️${stats.L} | ➡️${stats.R} | ❌${stats.X}`;
+      document.getElementById('girStats').textContent =
+        `${stats.girHits}/${round.holes} (${stats.girPct}%)`;
+      document.getElementById('totalPutts').textContent = stats.totalPutt;
+
+      const breakdown =
+        `Eagle: ${stats.eagle} | Birdie: ${stats.birdie} | Par: ${stats.parCount} | ` +
+        `Bogey: ${stats.bogey} | Double+: ${stats.doubleOrWorse}`;
+      document.getElementById('scoreBreakdown').textContent = breakdown;
+
+      document.getElementById('statsPanel').style.display = 'block';
+      document.getElementById('statsPanel').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function analyzeRound() {
+      const round = collectRoundData();
+      const stats = calculateStats(round);
+      displayStats(stats, round);
+    }
+
+    function saveRound() {
+      const round = collectRoundData();
+      const stats = calculateStats(round);
+
+      let summary =
+        `🏌️ รอบ: ${round.courseName}\n` +
+        `📅 วันที่: ${round.date}\n` +
+        `หลุม: ${round.holes}\n\n` +
+        `📊 รายละเอียดหลุม:\n`;
+
+      round.holeData.forEach(h => {
+        const firText =
+          h.fir === '✅' ? 'Hit' :
+          h.fir === '⬅️' ? 'Left' :
+          h.fir === '➡️' ? 'Right' :
+          h.fir === '❌' ? 'Miss' : '-';
+
+        const girText =
+          h.gir === '✅' ? 'GIR' :
+          h.gir === '❌' ? 'Miss' : '-';
+
+        summary +=
+          `Hole ${h.hole}: Par ${h.par}, ` +
+          `Stroke ${h.stroke ?? '-'}, ` +
+          `FIR ${firText}, GIR ${girText}, ` +
+          `Putt ${h.putt ?? '-'}\n`;
+      });
+
+      summary +=
+        `\n🎯 สรุปรวม:\n` +
+        `Gross: ${stats.totalStroke}\n` +
+        `FW Hit: ${stats.fwHits}/${stats.totalFw} (${stats.fwPct}%)\n` +
+        `Miss: ⬅️${stats.L} | ➡️${stats.R} | ❌${stats.X}\n` +
+        `GIR: ${stats.girHits}/${round.holes} (${stats.girPct}%)\n` +
+        `Putts: ${stats.totalPutts}\n` +
+        `Score: Eagle ${stats.eagle} | Birdie ${stats.birdie} | Par ${stats.parCount} | ` +
+        `Bogey ${stats.bogey} | Double+ ${stats.doubleOrWorse}`;
+
+      round.summary = summary;
+
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      list.unshift(round);
+      if (list.length > 50) list.length = 50;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+
+      loadSavedRounds();
+      alert('✅ บันทึกรอบพร้อมรายละเอียดครบถ้วนแล้ว');
+    }
+
+    function loadSavedRounds() {
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const container = document.getElementById('savedRounds');
+
+      if (!list.length) {
+        container.innerHTML = '<div class="empty-state">📋 ยังไม่มีรอบที่บันทึก</div>';
+        return;
       }
 
-      if (gir === '✅') girCount++;
-      putts += putt;
-      gross += stroke;
-    });
+      container.innerHTML = list.map(r => {
+        const total = r.holeData.reduce((sum, h) => sum + (h.stroke || 0), 0);
+        return `
+          <div class="round-item">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <strong>${r.courseName}</strong>
+              <span>${r.date}</span>
+            </div>
+            <div>🏌️ ${r.holes} หลุม | 📊 Total: ${total}</div>
+            <div class="round-summary">${r.summary.replace(/\n/g, '<br>')}</div>
+            <button
+              style="margin-top:10px;padding:6px 12px;background:#f44336;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;"
+              onclick="deleteRound(${r.id})"
+            >🗑️ ลบ</button>
+          </div>
+        `;
+      }).join('');
+    }
 
-    const holes = round.holes || 18;
-    const fwPct = totalFw > 0 ? Math.round(fwHits / totalFw * 100) : 0;
-    const girPct = holes > 0 ? Math.round(girCount / holes * 100) : 0;
+    function deleteRound(id) {
+      if (!confirm('🗑️ ต้องการลบรอบนี้หรือไม่?')) return;
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const filtered = list.filter(r => r.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+      loadSavedRounds();
+    }
 
-    return {
-      gross,
-      fwHits,
-      totalFw,
-      fwPct,
-      L, R, X,
-      girCount,
-      girPct,
-      putts,
-      holes
-    };
-  }
+    function resetRound() {
+      // popup ยืนยันก่อนรีเซ็ต
+      if (!confirm('🔄 รีเซ็ตข้อมูลรอบปัจจุบันทั้งหมด?')) return;
 
-  function renderStats(stats, round) {
-    document.getElementById('resultTitle').innerText = 
-      `📊 สรุปผลกอล์ฟ: ${round.name} (${round.date})`;
-    document.getElementById('totalGross').innerText = stats.gross;
-    document.getElementById('fwPct').innerText = 
-      `${stats.fwHits}/${stats.totalFw} (${stats.fwPct}%)`;
-    document.getElementById('missDetails').innerText = 
-      `⬅️${stats.L} | ➡️${stats.R} | ❌${stats.X}`;
-    document.getElementById('girPct').innerText = 
-      `${stats.girCount}/${stats.holes} (${stats.girPct}%)`;
-    document.getElementById('totalPutts').innerText = stats.putts;
+      document.getElementById('courseName').value = '';
+      document.getElementById('roundDate').value = new Date().toISOString().slice(0,10);
+      document.getElementById('totalHoles').value = 18;
+      buildScoreTable(18);
+      document.getElementById('statsPanel').style.display = 'none';
 
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
-  }
+      alert('รีเซ็ตข้อมูลเรียบร้อยแล้ว');
+    }
 
-  // === Utility Functions ===
-  function copyToClipboard() {
-    const gross = document.getElementById('totalGross').innerText;
-    const fw = document.getElementById('fwPct').innerText;
-    const miss = document.getElementById('missDetails').innerText;
-    const gir = document.getElementById('girPct').innerText;
-    const putt = document.getElementById('totalPutts').innerText;
-    
-    const text = `🏌️ Golf Round Summary:
-📊 Gross Score: ${gross}
-🎯 Fairway Hit: ${fw}
-📍 Miss Direction: ${miss}
-🟢 GIR: ${gir}
-⛳ Total Putts: ${putt}
+    function copyStats() {
+      const gross = document.getElementById('grossScore').textContent;
+      const fw   = document.getElementById('fairwayHit').textContent;
+      const miss = document.getElementById('missDirection').textContent;
+      const gir  = document.getElementById('girStats').textContent;
+      const putt = document.getElementById('totalPutts').textContent;
+      const scoreBreak = document.getElementById('scoreBreakdown').textContent;
 
-Generated by Golf Pro Tracker 🏌️‍♂️`;
+      const text =
+        `🏌️ Golf Stats\n` +
+        `Gross: ${gross}\n` +
+        `FW: ${fw}\n` +
+        `Miss: ${miss}\n` +
+        `GIR: ${gir}\n` +
+        `Putts: ${putt}\n` +
+        `Score: ${scoreBreak}`;
 
-    navigator.clipboard.writeText(text).then(() => {
-      alert('📋 คัดลอกสำเร็จ! พร้อมส่งให้ AI แล้ว');
-    }).catch(() => {
-      prompt('📋 คัดลอกข้อความด้านล่างนี้:', text);
-    });
-  }
-
-  function resetCurrent() {
-    if (!confirm('🔄 รีเซ็ตข้อมูลรอบปัจจุบันทั้งหมด?')) return;
-    
-    localStorage.removeItem(CURRENT_KEY);
-    document.getElementById('courseName').value = '';
-    document.getElementById('roundDate').value = new Date().toISOString().slice(0,10);
-    document.getElementById('totalHoles').value = 18;
-    buildTable(18);
-    document.getElementById('result').style.display = 'none';
-  }
-
-  // === Event Listeners ===
-  document.getElementById('totalHoles').addEventListener('change', () => {
-    const holes = parseInt(document.getElementById('totalHoles').value);
-    buildTable(holes);
-    saveCurrent();
-  });
-
-  document.getElementById('courseName').addEventListener('input', saveCurrent);
-  document.getElementById('roundDate').addEventListener('change', saveCurrent);
-
-  // === Initialize App ===
-  (function init() {
-    document.getElementById('roundDate').value = new Date().toISOString().slice(0,10);
-    buildTable(parseInt(document.getElementById('totalHoles').value));
-    loadCurrent();
-    loadRoundsList();
-  })();
-</script>
-
+      navigator.clipboard.writeText(text)
+        .then(() => alert('📋 Copy สำเร็จ!'))
+        .catch(() => prompt('คัดลอกข้อความนี้:', text));
+    }
+  </script>
 </body>
 </html>
 
 							<script>
-                            	const CACHE_NAME = 'golf-pro-tracker-v2.1';
-const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  'https://cdn-icons-png.flaticon.com/192/1099/1099680.png',
-  'https://cdn-icons-png.flaticon.com/512/1099/1099680.png'
-];
-
-// Install Event
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
-
-// Fetch Event
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
-      }
-    )
-  );
-});
-
-// Activate Event
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-});
+                            	
 							</script>
                         </body>
                         </html>
