@@ -398,7 +398,7 @@
       <button class="btn-copy" onclick="copyStats()">📋 Copy</button>
     </div>
 
-    <!-- รอบที่บันทึกไว้ -->
+    <!-- รอบที่บันทึกแล้ว -->
     <div class="card">
       <div class="header" style="font-size:1.3em;">📈 รอบที่บันทึกไว้</div>
       <div class="saved-rounds" id="savedRounds"></div>
@@ -415,7 +415,7 @@
       });
     }
 
-    const STORAGE_KEY = 'golf_rounds_full_v1';
+    const STORAGE_KEY = 'golf_rounds_full_v2';
     const FIR_STATES = ['', '✅', '⬅️', '➡️', '❌']; // ว่าง, Hit, ซ้าย, ขวา, พลาด
     const GIR_STATES = ['', '❌', '✅'];            // ว่าง, ผิด, ถูก
 
@@ -436,7 +436,7 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong>${i}</strong></td>
-          <td><button class="btn btn-par" onclick="togglePar(this)">${i <= 2 || i >= 17 ? 3 : 4}</button></td>
+          <td><button class="btn btn-par" onclick="togglePar(this)">3</button></td>
           <td class="fir-cell" data-hole="${i}">-</td>
           <td><input type="number" class="input-score" data-type="stroke" data-hole="${i}" min="1" max="15"></td>
           <td><button class="btn btn-toggle" onclick="toggleGir(this)" data-hole="${i}">-</button></td>
@@ -444,26 +444,31 @@
         `;
         tbody.appendChild(tr);
       }
-      updateFirCells();
-    }
-
-    function updateFirCells() {
-      document.querySelectorAll('.fir-cell').forEach(cell => {
-        const parBtn = cell.parentElement.querySelector('.btn-par');
-        const par = parseInt(parBtn.textContent, 10);
-        if (par === 3) {
-          cell.innerHTML = '-';
-        } else {
-          cell.innerHTML = '<button class="btn btn-toggle" onclick="toggleFir(this)">-</button>';
-        }
-      });
+      // เริ่มต้น Par=3 ทุกหลุม → ยังไม่มี FIR จนกว่าผู้ใช้จะเปลี่ยนเป็น 4/5
     }
 
     function togglePar(btn) {
       let par = parseInt(btn.textContent, 10);
       par = par >= 6 ? 3 : par + 1;
       btn.textContent = par;
-      updateFirCells();
+
+      // อัปเดต FIR เฉพาะแถวนี้
+      const row = btn.closest('tr');
+      const firCell = row.querySelector('.fir-cell');
+      const existingBtn = firCell.querySelector('button');
+
+      if (par === 3) {
+        firCell.textContent = '-';
+      } else {
+        if (!existingBtn) {
+          const firBtn = document.createElement('button');
+          firBtn.className = 'btn btn-toggle';
+          firBtn.textContent = '-';
+          firBtn.onclick = function () { toggleFir(this); };
+          firCell.innerHTML = '';
+          firCell.appendChild(firBtn);
+        }
+      }
     }
 
     function toggleFir(btn) {
@@ -518,7 +523,6 @@
       let fwHits = 0, totalFw = 0, L = 0, R = 0, X = 0;
       let girHits = 0;
 
-      // นับสกอร์ต่อหลุม
       let eagle = 0, birdie = 0, parCount = 0, bogey = 0, doubleOrWorse = 0;
 
       round.holeData.forEach(h => {
@@ -683,7 +687,6 @@
     }
 
     function resetRound() {
-      // popup ยืนยันก่อนรีเซ็ต
       if (!confirm('🔄 รีเซ็ตข้อมูลรอบปัจจุบันทั้งหมด?')) return;
 
       document.getElementById('courseName').value = '';
@@ -691,7 +694,6 @@
       document.getElementById('totalHoles').value = 18;
       buildScoreTable(18);
       document.getElementById('statsPanel').style.display = 'none';
-
     }
 
     function copyStats() {
